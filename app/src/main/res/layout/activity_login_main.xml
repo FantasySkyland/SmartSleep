@@ -61,6 +61,7 @@
                 android:textSize="14sp" />
 
             <ImageView
+                android:layout_alignParentEnd="true"
                 android:id="@+id/iv_cancel_username"
                 android:layout_width="24dp"
                 android:layout_height="24dp"
@@ -68,6 +69,7 @@
                 android:visibility="gone" />
 
             <FrameLayout
+                android:layout_alignParentEnd="true"
                 android:layout_width="match_parent"
                 android:layout_height=".5dp"
                 android:layout_below="@id/et_username"
@@ -94,6 +96,7 @@
                 android:textSize="14sp" />
 
             <ImageView
+                android:layout_alignParentEnd="true"
                 android:id="@+id/iv_cancel"
                 android:layout_width="24dp"
                 android:layout_height="24dp"
@@ -101,6 +104,7 @@
                 android:visibility="gone" />
 
             <FrameLayout
+                android:layout_alignParentEnd="true"
                 android:layout_width="match_parent"
                 android:layout_height=".5dp"
                 android:layout_below="@id/et_password"
