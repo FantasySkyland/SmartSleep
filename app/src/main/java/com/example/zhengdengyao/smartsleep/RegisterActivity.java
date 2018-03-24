@@ -10,10 +10,9 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
 
-public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
+public class RegisterActivity extends AppCompatActivity implements View.OnClickListener {
 
     private static final String TAG = "LoginMainAvt";
 
@@ -21,29 +20,18 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     EditText et_password;
     EditText et_username;
     Button btn_login;
-    TextView tv_register;
+
     boolean isUserNameEmpty = true;
     boolean isPasswordEmpty = true;
     ImageView iv_cancel_username;
 
 
-    public static void start(Context context){
-        Intent intent = new Intent(context,LoginActivity.class);
-        context.startActivity(intent);
-    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        //设置无标题
-//        requestWindowFeature(Window.FEATURE_NO_TITLE);
-//        //设置全屏
-//        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
-//                WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        setContentView(R.layout.activity_login_main);
+        setContentView(R.layout.activity_register);
         StatusBarUtils.statusbar(this);
         btn_login = (Button) findViewById(R.id.btn_login);
-        tv_register = (TextView) findViewById(R.id.tv_register);
-        tv_register.setOnClickListener(this);
         iv_cancel_username = (ImageView) findViewById(R.id.iv_cancel_username);
         iv_cancel_username.setOnClickListener(this);
         iv_cancel = (ImageView) findViewById(R.id.iv_cancel);
@@ -133,27 +121,21 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 if (btn_login.getTag().equals("canClick")) {
                     String username = et_username.getText().toString();
                     String password = et_password.getText().toString();
-                    String localUsername = SpUtil.getString(LoginActivity.this,username,null );
-                    String localPassword = SpUtil.getString(LoginActivity.this,password,null );
-                    if (localUsername == null){
-                        Toast.makeText(LoginActivity.this,"用户名不存在",Toast.LENGTH_SHORT).show();
-                    } else if (!username.equals(localUsername)) {
-                        Toast.makeText(LoginActivity.this,"用户名不存在",Toast.LENGTH_SHORT).show();
-                    }else if (!password.equals(localPassword)){
-                        Toast.makeText(LoginActivity.this,"密码错误",Toast.LENGTH_SHORT).show();
-                    }else {
-                        Intent intent =  new Intent(LoginActivity.this,MainActivity.class);
-                        intent.putExtra("username",username);
-                        startActivity(intent);
-                        finish();
-                    }
-
-
+                    SpUtil.putString(RegisterActivity.this,username,username);
+                    SpUtil.putString(RegisterActivity.this,password,password);
+                    Toast.makeText(RegisterActivity.this,"注册成功",Toast.LENGTH_SHORT).show();
+                    Intent intent =  new Intent(RegisterActivity.this,LoginActivity.class);
+                    startActivity(intent);
+                    finish();
                 }
             }
         });
     }
 
+    public static void start(Context context){
+        Intent intent = new Intent(context,RegisterActivity.class);
+        context.startActivity(intent);
+    }
 
 
     @Override
@@ -162,13 +144,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             case R.id.iv_cancel:
                 et_password.setText("");
                 break;
-            case R.id.tv_register:
-                RegisterActivity.start(this);
-                break;
+
             case R.id.iv_cancel_username:
                 et_username.setText("");
                 break;
         }
     }
-
 }
