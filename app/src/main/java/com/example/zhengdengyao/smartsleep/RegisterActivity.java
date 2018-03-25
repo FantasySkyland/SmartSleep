@@ -3,7 +3,6 @@ package com.example.zhengdengyao.smartsleep;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
@@ -12,8 +11,11 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-public class RegisterActivity extends AppCompatActivity implements View.OnClickListener {
+import com.example.zhengdengyao.smartsleep.data.BaseActivity;
+import com.example.zhengdengyao.smartsleep.data.UserBean;
 
+public class RegisterActivity extends BaseActivity implements View.OnClickListener {
+    private Context mContext = this;
     private static final String TAG = "LoginMainAvt";
 
     ImageView iv_cancel;
@@ -118,22 +120,31 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         btn_login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (btn_login.getTag().equals("canClick")) {
-                    String username = et_username.getText().toString();
-                    String password = et_password.getText().toString();
-                    SpUtil.putString(RegisterActivity.this,username,username);
-                    SpUtil.putString(RegisterActivity.this,password,password);
-                    Toast.makeText(RegisterActivity.this,"注册成功",Toast.LENGTH_SHORT).show();
-                    Intent intent =  new Intent(RegisterActivity.this,LoginActivity.class);
-                    startActivity(intent);
-                    finish();
-                }
+                register();
             }
         });
     }
 
-    public static void start(Context context){
-        Intent intent = new Intent(context,RegisterActivity.class);
+    public void register() {
+        if (btn_login.getTag().equals("canClick")) {
+            String username = et_username.getText().toString();
+            String password = et_password.getText().toString();
+            if (userDAO.queryForId(username) == null) {
+                userDAO.add(new UserBean(username,password));
+                Toast.makeText(RegisterActivity.this, "注册成功", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
+                startActivity(intent);
+                finish();
+            } else {
+                et_username.setText("");
+                et_password.setText("");
+                Toast.makeText(mContext, "用户已存在", Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
+
+    public static void start(Context context) {
+        Intent intent = new Intent(context, RegisterActivity.class);
         context.startActivity(intent);
     }
 

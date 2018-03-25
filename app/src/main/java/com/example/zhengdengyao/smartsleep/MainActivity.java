@@ -1,10 +1,13 @@
 package com.example.zhengdengyao.smartsleep;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import com.example.zhengdengyao.smartsleep.data.UserDAO;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -18,6 +21,7 @@ public class MainActivity extends AppCompatActivity {
     TextView mTvLogin;
     @BindView(R.id.alarm)
     LinearLayout mAlarm;
+    private Context mContext = this;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,9 +29,9 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
         String username = getIntent().getStringExtra("username");
-        if (username == null){
+        if (username == null) {
             mTvId.setText("未登陆");
-        }else {
+        } else {
             mTvId.setText(username);
         }
 

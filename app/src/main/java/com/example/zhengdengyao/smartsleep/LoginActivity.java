@@ -3,7 +3,6 @@ package com.example.zhengdengyao.smartsleep;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
@@ -13,7 +12,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
+import com.example.zhengdengyao.smartsleep.data.BaseActivity;
+import com.example.zhengdengyao.smartsleep.data.UserBean;
+
+public class LoginActivity extends BaseActivity implements View.OnClickListener {
 
     private static final String TAG = "LoginMainAvt";
 
@@ -27,10 +29,11 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     ImageView iv_cancel_username;
 
 
-    public static void start(Context context){
-        Intent intent = new Intent(context,LoginActivity.class);
+    public static void start(Context context) {
+        Intent intent = new Intent(context, LoginActivity.class);
         context.startActivity(intent);
     }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -130,30 +133,31 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         btn_login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (btn_login.getTag().equals("canClick")) {
-                    String username = et_username.getText().toString();
-                    String password = et_password.getText().toString();
-                    String localUsername = SpUtil.getString(LoginActivity.this,username,null );
-                    String localPassword = SpUtil.getString(LoginActivity.this,password,null );
-                    if (localUsername == null){
-                        Toast.makeText(LoginActivity.this,"用户名不存在",Toast.LENGTH_SHORT).show();
-                    } else if (!username.equals(localUsername)) {
-                        Toast.makeText(LoginActivity.this,"用户名不存在",Toast.LENGTH_SHORT).show();
-                    }else if (!password.equals(localPassword)){
-                        Toast.makeText(LoginActivity.this,"密码错误",Toast.LENGTH_SHORT).show();
-                    }else {
-                        Intent intent =  new Intent(LoginActivity.this,MainActivity.class);
-                        intent.putExtra("username",username);
-                        startActivity(intent);
-                        finish();
-                    }
-
-
-                }
+                login();
             }
         });
     }
+    public void login() {
+        if (btn_login.getTag().equals("canClick")) {
+            String username = et_username.getText().toString();
+            String password = et_password.getText().toString();
+            UserBean userBean = userDAO.queryForId(username);
+            if (userBean == null) {
+                Toast.makeText(LoginActivity.this, "用户不存在", Toast.LENGTH_SHORT).show();
+            } else if (!username.equals(userBean.getUserName())) {
+                Toast.makeText(LoginActivity.this, "用户名不存在", Toast.LENGTH_SHORT).show();
+            } else if (!password.equals(userBean.getPassWord())) {
+                Toast.makeText(LoginActivity.this, "密码错误", Toast.LENGTH_SHORT).show();
+            } else {
+                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                intent.putExtra("username", username);
+                startActivity(intent);
+                finish();
+            }
 
+
+        }
+    }
 
 
     @Override
@@ -170,5 +174,4 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 break;
         }
     }
-
 }
