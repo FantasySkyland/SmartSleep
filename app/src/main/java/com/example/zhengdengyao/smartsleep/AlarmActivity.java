@@ -9,6 +9,7 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.os.Handler;
 import android.os.Message;
+import android.provider.AlarmClock;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -18,7 +19,7 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.List;
 
-public class AlarmActivity extends AppCompatActivity {
+public class AlarmActivity extends BaseActivity {
     private final static int SET = 1;// 线程操作标记
     private Button callSystemClock;
     private List<PackageInfo> allPackageInfos; // 取得系统安装所有软件信息
@@ -36,8 +37,8 @@ public class AlarmActivity extends AppCompatActivity {
         }
     };
 
-    public static void start(Context context){
-        Intent intent = new Intent(context,AlarmActivity.class);
+    public static void start(Context context) {
+        Intent intent = new Intent(context, AlarmActivity.class);
         context.startActivity(intent);
     }
 
@@ -59,8 +60,7 @@ public class AlarmActivity extends AppCompatActivity {
     }
 
 
-
-    private void call(){
+    private void call() {
         String activityName = "";//activity名
         String packageName = "";// 得到程序包名
         String clockPackageName = "";// 闹钟包名
@@ -80,8 +80,13 @@ public class AlarmActivity extends AppCompatActivity {
             Intent intent = new Intent();
             intent.setComponent(new ComponentName(clockPackageName, activityName));
             startActivity(intent);
-        }else{
-            Toast.makeText(this, "启动闹钟失败！", Toast.LENGTH_SHORT).show();
+        } else {
+            try {
+                Intent alarms = new Intent(AlarmClock.ACTION_SHOW_ALARMS);
+                startActivity(alarms);
+            } catch (Exception e) {
+                Toast.makeText(this, "启动闹钟失败！", Toast.LENGTH_SHORT).show();
+            }
         }
     }
 
@@ -109,5 +114,7 @@ public class AlarmActivity extends AppCompatActivity {
             msg.what = SET;// 操作标记
             mHandler.sendMessage(msg);
         }
-    };
+    }
+
+    ;
 }

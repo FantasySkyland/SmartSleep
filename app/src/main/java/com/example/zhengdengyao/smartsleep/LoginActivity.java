@@ -12,7 +12,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.zhengdengyao.smartsleep.data.BaseActivity;
 import com.example.zhengdengyao.smartsleep.data.UserBean;
 
 public class LoginActivity extends BaseActivity implements View.OnClickListener {
